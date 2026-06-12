@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>工作备忘</title>
+  <style>
+    :root {
+      color-scheme: light;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background: #fbfbfb;
+      color: #23272b;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      min-height: 100vh;
+      padding: 24px;
+      background: linear-gradient(180deg, #fdfdfd 0%, #eceff3 100%);
+    }
+    .toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+    .toolbar .title {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .toolbar h1 {
+      margin: 0;
+      font-size: 1.3rem;
+      letter-spacing: 0.02em;
+    }
+    .toolbar .subtitle {
+      margin: 0;
+      color: #626b75;
+      font-size: 0.92rem;
+    }
+    .button-group {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    button.icon-btn, button.action-btn {
+      border: 1px solid #c8d2dc;
+      background: #fff;
+      color: #333;
+      border-radius: 999px;
+      padding: 8px 14px;
+      cursor: pointer;
+      font-size: 0.92rem;
+    }
+    button.icon-btn:hover, button.action-btn:hover { background: #f0f4fb; }
+    .card {
+      background: #fff;
+      border: 1px solid #d8dee7;
+      border-radius: 18px;
+      box-shadow: 0 16px 35px rgba(31, 41, 55, 0.08);
+      padding: 22px;
+      max-width: 640px;
+    }
+    .status {
+      display: grid;
+      gap: 14px;
+      margin-bottom: 18px;
+    }
+    .status-row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: center;
+      gap: 12px;
+      padding: 16px;
+      border-radius: 16px;
+      background: #f7fafd;
+      border: 1px solid #e3eaf2;
+    }
+    .status-row strong { font-size: 1rem; color: #556078; }
+    .status-row .value { text-align: right; font-size: 1.2rem; font-weight: 700; }
+    .status-row .small { color: #707a8d; font-size: 0.92rem; }
+    .controls {
+      display: grid;
+      gap: 16px;
+      margin-bottom: 12px;
+    }
+    .controls label {
+      display: grid;
+      gap: 6px;
+      font-size: 0.95rem;
+      color: #373f4b;
+    }
+    .controls input {
+      width: 100%;
+      min-width: 0;
+      padding: 10px 12px;
+      border: 1px solid #c3cbd7;
+      border-radius: 12px;
+      font-size: 1rem;
+      color: #1e293b;
+    }
+    .controls .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+    .controls .small-text {
+      color: #6c778d;
+      font-size: 0.92rem;
+      line-height: 1.5;
+    }
+    .controls button.primary {
+      width: 100%;
+      padding: 12px 16px;
+      border: none;
+      background: #2563eb;
+      color: #fff;
+      border-radius: 12px;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+    .controls button.primary:hover { background: #1d4ed8; }
+    .note {
+      color: #5f6776;
+      font-size: 0.92rem;
+      line-height: 1.6;
+      margin-top: 8px;
+    }
+    .toast {
+      position: fixed;
+      right: 18px;
+      bottom: 18px;
+      width: min(320px, calc(100% - 36px));
+      padding: 14px 16px;
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.96);
+      border: 1px solid rgba(151, 163, 184, 0.28);
+      display: none;
+      gap: 10px;
+      z-index: 20;
+      box-shadow: 0 18px 38px rgba(15, 23, 42, 0.12);
+    }
+    .toast.show { display: grid; }
+    .toast strong { font-size: 0.98rem; }
+    .toast small { color: #4b5563; }
+    .toast button {
+      justify-self: end;
+      border: none;
+      padding: 8px 12px;
+      background: #eef2ff;
+      color: #1d4ed8;
+      border-radius: 999px;
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
+    .mini-view {
+      display: none;
+      padding: 14px 16px;
+      border: 1px solid #d2dae4;
+      border-radius: 18px;
+      background: #ffffff;
+      max-width: 520px;
+      box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
+      gap: 10px;
+    }
+    .mini-view.show { display: grid; }
+    .mini-view .row { display: flex; justify-content: space-between; gap: 12px; align-items: center; }
+    .mini-view .row strong { font-size: 1rem; }
+    .mini-view .hint { color: #5a6470; font-size: 0.9rem; }
+    body.hidden-mode .card { display: none; }
+    body.hidden-mode .mini-view { display: grid; }
+  </style>
+</head>
+<body>
+  <div class="toolbar">
+    <div class="title">
+      <h1>工作备忘</h1>
+      <p class="subtitle">简洁白板 · 喝水提醒</p>
+    </div>
+    <div class="button-group">
+      <button class="icon-btn" id="toggleHide">隐藏模式</button>
+      <button class="icon-btn" id="toggleQuiet">静音</button>
+      <button class="icon-btn" id="requestNotify">启用提醒</button>
+      <button class="icon-btn" id="testNotify">测试提醒</button>
+      <button class="icon-btn" id="checkNotify">检查通知设置</button>
+    </div>
+    <div class="small-text" id="notificationStatus">通知状态：未开启</div>
+    <div class="small-text" id="notificationHint">如果在本地文件中打开，Chrome/Edge 通知可能无法正常弹出。</div>
+    <div class="small-text">建议使用本地服务器运行页面，比如：<code>python -m http.server 8000</code>，然后访问 <code>http://localhost:8000/work_timer.html</code></div>
+  </div>
+  <section class="card">
+    <div class="status">
+      <div class="status-row">
+        <div>
+          <strong>固定提醒</strong>
+          <div class="small">16:30-24:00 每0.5小时</div>
+        </div>
+        <div class="value" id="currentTime">--:--:--</div>
+      </div>
+      <div class="status-row">
+        <div>
+          <strong id="scheduleStatusLabel">当前状态：等待提醒</strong>
+          <div class="small" id="scheduleCountLabel">累计提醒 0 次</div>
+        </div>
+        <div class="value" id="nextReminder">--:--</div>
+      </div>
+    </div>
+    <div class="controls">
+      <div class="small-text" id="activityStatus">活动状态：检测中</div>
+      <div class="small-text">允许桌面通知后，即使当前标签页在后台，也会弹出系统提醒。</div>
+      <div class="small-text">点击“测试提醒”可立即验证实际通知是否能弹出。</div>
+    </div>
+    <div class="note">
+      如果你当前不操作电脑，会话处于空闲时，提醒会暂停。<br />
+      重新恢复活动后，下一个时间点继续提醒。
+    </div>
+  </section>
+  <section class="card">
+    <div class="status">
+      <div class="status-row">
+        <div>
+          <strong>旧计时器</strong>
+          <div class="small">间隔提醒模式</div>
+        </div>
+        <div class="value" id="oldCountdown">00:00</div>
+      </div>
+      <div class="status-row">
+        <div>
+          <strong id="oldStatusLabel">当前状态：运行中</strong>
+          <div class="small" id="oldCountLabel">累计提醒 0 次</div>
+        </div>
+        <div class="value" id="oldModeLabel">旧计时器</div>
+      </div>
+    </div>
+    <div class="controls">
+      <label>
+        计时间隔（分钟）
+        <input id="workMinutes" type="number" min="1" max="120" value="45" />
+      </label>
+      <button class="primary" id="applyBtn">保存设置并重置</button>
+      <div class="small-text">这是旧倒计时提醒，设置后会按间隔重复提醒。</div>
+    </div>
+    <div class="note">
+      这个计时器和固定时间提醒同时工作。你可以把它当成老版本的番茄钟备份。
+    </div>
+  </section>
+  <section class="mini-view" id="miniView">
+    <div class="row">
+      <strong>专注计时</strong>
+      <span class="hint" id="miniHint">点击右上角切换回完整视图</span>
+    </div>
+    <div class="row">
+      <span>剩余</span>
+      <strong id="miniCountdown">00:00</strong>
+    </div>
+    <div class="row">
+      <span id="miniStatus">专注中</span>
+      <span id="miniWaterCount">喝水 0 次</span>
+    </div>
+  </section>
+  <aside class="toast" id="toast">
+    <strong id="toastTitle">休息一下吧</strong>
+    <small id="toastBody">短暂松弛后能更稳定地回到工作状态。</small>
+    <button id="closeToast">已看</button>
+  </aside>
+  <script>
+    const scheduleCountdownEl = document.getElementById('currentTime');
+    const scheduleNextEl = document.getElementById('nextReminder');
+    const scheduleStatusEl = document.getElementById('scheduleStatusLabel');
+    const scheduleCountEl = document.getElementById('scheduleCountLabel');
+    const oldCountdownEl = document.getElementById('oldCountdown');
+    const oldStatusEl = document.getElementById('oldStatusLabel');
+    const oldCountEl = document.getElementById('oldCountLabel');
+    const oldModeEl = document.getElementById('oldModeLabel');
+    const activityStatusEl = document.getElementById('activityStatus');
+    const notificationStatusEl = document.getElementById('notificationStatus');
+    const notificationHintEl = document.getElementById('notificationHint');
+    const toastEl = document.getElementById('toast');
+    const closeToastBtn = document.getElementById('closeToast');
+    const toggleHideBtn = document.getElementById('toggleHide');
+    const toggleQuietBtn = document.getElementById('toggleQuiet');
+    const requestNotifyBtn = document.getElementById('requestNotify');
+    const testNotifyBtn = document.getElementById('testNotify');
+    const checkNotifyBtn = document.getElementById('checkNotify');
+    const workInput = document.getElementById('workMinutes');
+    const applyBtn = document.getElementById('applyBtn');
+    const miniCountdownEl = document.getElementById('miniCountdown');
+    const miniStatusEl = document.getElementById('miniStatus');
+    const miniWaterCountEl = document.getElementById('miniWaterCount');
+    const toastTitle = document.getElementById('toastTitle');
+    const toastBody = document.getElementById('toastBody');
+
+    const STORAGE_KEY = 'workTimerSettingsV2';
+    const ACTIVE_TIMEOUT = 5 * 60 * 1000;
+    const SCHEDULE_START = 16 * 60 + 30;
+    const SCHEDULE_END = 24 * 60;
+    const SCHEDULE_INTERVAL = 30;
+
+    let lastActivity = Date.now();
+    let reminderCount = 0;
+    let hiddenMode = false;
+    let quietMode = false;
+    let lastRemindedSlot = null;
+    let notificationState = 'default';
+
+    let oldIntervalMinutes = 45;
+    let oldRemaining = oldIntervalMinutes * 60;
+    let oldActive = true;
+    let oldReminderCount = 0;
+
+    let timerId = null;
+
+    function loadSettings() {
+      try {
+        const stored = localStorage.getItem(STORAGE_KEY);
+        if (!stored) return;
+        const config = JSON.parse(stored);
+        if (typeof config.hiddenMode === 'boolean') hiddenMode = config.hiddenMode;
+        if (typeof config.quietMode === 'boolean') quietMode = config.quietMode;
+        if (typeof config.reminderCount === 'number') reminderCount = config.reminderCount;
+        if (typeof config.lastRemindedSlot === 'string') lastRemindedSlot = config.lastRemindedSlot;
+        if (typeof config.oldIntervalMinutes === 'number') oldIntervalMinutes = config.oldIntervalMinutes;
+        if (typeof config.oldRemaining === 'number') oldRemaining = config.oldRemaining;
+        if (typeof config.oldActive === 'boolean') oldActive = config.oldActive;
+        if (typeof config.oldReminderCount === 'number') oldReminderCount = config.oldReminderCount;
+        workInput.value = oldIntervalMinutes;
+      } catch (error) {
+        console.warn('读取设置失败', error);
+      }
+    }
+
+    function saveSettings() {
+      const config = {
+        hiddenMode,
+        quietMode,
+        reminderCount,
+        lastRemindedSlot,
+        oldIntervalMinutes,
+        oldRemaining,
+        oldActive,
+        oldReminderCount,
+      };
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(config));
+    }
+
+    function requestNotificationPermission() {
+      if (!('Notification' in window) || typeof Notification.requestPermission !== 'function') {
+        updateNotificationStatus();
+        showToast('通知不支持', '当前浏览器或页面环境无法使用桌面通知。');
+        return;
+      }
+      const handlePermission = (permission) => {
+        notificationState = permission;
+        updateNotificationStatus();
+        if (permission === 'granted') {
+          try {
+            new Notification('喝水提醒已启用', { body: '设置成功，后续会在后台提示你喝水', silent: true });
+          } catch (error) {
+            console.warn('通知测试失败', error);
+            showToast('通知已启用', '提醒已开启，但系统通知创建失败。');
+          }
+        } else if (permission === 'denied') {
+          showToast('通知已拒绝', '请在浏览器设置中允许通知，或使用页面内提醒。');
+        }
+      };
+      const result = Notification.requestPermission(handlePermission);
+      if (result && typeof result.then === 'function') {
+        result.then(handlePermission).catch((error) => {
+          console.warn('通知权限请求失败', error);
+          updateNotificationStatus();
+          showToast('请求失败', '通知权限请求出错，请刷新页面再试。');
+        });
+      }
+    }
+
+    function getNotificationStatusText() {
+      if (!('Notification' in window)) return '不支持通知';
+      const perm = Notification.permission || notificationState || 'default';
+      if (perm === 'granted') return '通知已开启';
+      if (perm === 'denied') return '通知已拒绝';
+      return '通知未开启';
+    }
+
+    function getNotificationHintText() {
+      if (!('Notification' in window)) return '浏览器不支持桌面通知。';
+      const fromFile = location.protocol === 'file:';
+      if (!window.isSecureContext || fromFile) {
+        return '当前页面非安全上下文，Chrome/Edge 通知可能无法正常弹出。建议使用 localhost 或本地服务器运行页面，例如：python -m http.server 8000。';
+      }
+      return '允许通知后，Chrome/Edge 会在后台弹出桌面提醒。';
+    }
+
+    function updateNotificationStatus() {
+      if (!notificationStatusEl) return;
+      notificationStatusEl.textContent = `通知状态：${getNotificationStatusText()}`;
+      if (notificationHintEl) notificationHintEl.textContent = getNotificationHintText();
+    }
+
+    function sendTestNotification() {
+      if (!('Notification' in window)) {
+        showToast('通知不支持', '浏览器不支持桌面通知。');
+        return;
+      }
+      const perm = Notification.permission || notificationState || 'default';
+      if (perm !== 'granted') {
+        showToast('请先启用通知', '点击“启用提醒”并允许浏览器通知权限。');
+        return;
+      }
+      try {
+        new Notification('测试提醒', { body: '如果你看到这个通知，系统通知工作正常。', silent: true });
+        showToast('测试已发送', '已尝试发送桌面通知。');
+      } catch (error) {
+        console.warn('测试通知创建失败', error);
+        showToast('测试失败', '通知无法创建，检查浏览器/系统通知设置。');
+      }
+    }
+
+    function formatTime(sec) {
+      const minutes = Math.floor(sec / 60).toString().padStart(2, '0');
+      const seconds = Math.floor(sec % 60).toString().padStart(2, '0');
+      return `${minutes}:${seconds}`;
+    }
+
+    function formatSlot(totalMinutes) {
+      const hour = Math.floor(totalMinutes / 60).toString().padStart(2, '0');
+      const minute = (totalMinutes % 60).toString().padStart(2, '0');
+      return `${hour}:${minute}`;
+    }
+
+    function getCurrentMinutes(now) {
+      return now.getHours() * 60 + now.getMinutes();
+    }
+
+    function getScheduleSlots() {
+      const slots = [];
+      for (let time = SCHEDULE_START; time < SCHEDULE_END; time += SCHEDULE_INTERVAL) {
+        slots.push(time);
+      }
+      return slots;
+    }
+
+    function getNextScheduleSlot(now) {
+      const currentMinutes = getCurrentMinutes(now);
+      const slots = getScheduleSlots();
+      for (const slot of slots) {
+        if (currentMinutes < slot) return slot;
+      }
+      return slots.length ? slots[0] : null;
+    }
+
+    function isUserActive() {
+      return Date.now() - lastActivity <= ACTIVE_TIMEOUT && !document.hidden;
+    }
+
+    function markActivity() {
+      lastActivity = Date.now();
+      if (activityStatusEl) activityStatusEl.textContent = '活动状态：活跃';
+    }
+
+    function updateUI() {
+      const now = new Date();
+      scheduleCountdownEl.textContent = now.toLocaleTimeString();
+      const nextSlot = getNextScheduleSlot(now);
+      scheduleNextEl.textContent = nextSlot !== null ? formatSlot(nextSlot) : '--:--';
+      const activeText = isUserActive() ? '活动状态：活跃' : '活动状态：空闲，暂不提醒';
+      if (activityStatusEl) activityStatusEl.textContent = activeText;
+      scheduleStatusEl.textContent = isUserActive() ? '当前状态：等待提醒' : '当前状态：空闲中';
+      scheduleCountEl.textContent = `累计提醒 ${reminderCount} 次`;
+      oldCountdownEl.textContent = formatTime(oldRemaining);
+      oldStatusEl.textContent = oldActive ? '当前状态：运行中' : '当前状态：暂停';
+      oldCountEl.textContent = `累计提醒 ${oldReminderCount} 次`;
+      oldModeEl.textContent = '旧计时器';
+      miniCountdownEl.textContent = formatTime(oldRemaining);
+      miniStatusEl.textContent = oldActive ? '专注中' : '暂停中';
+      miniWaterCountEl.textContent = `喝水 ${reminderCount} 次`;
+      toggleHideBtn.textContent = hiddenMode ? '退出隐藏' : '隐藏模式';
+      toggleQuietBtn.textContent = quietMode ? '取消静音' : '静音';
+      updateNotificationStatus();
+      saveSettings();
+    }
+
+    function showToast(message, description) {
+      toastTitle.textContent = message;
+      toastBody.textContent = description;
+      toastEl.classList.add('show');
+      if (quietMode) return;
+      if (!('Notification' in window)) return;
+      const perm = Notification.permission || notificationState || 'default';
+      if (perm !== 'granted') return;
+      try {
+        new Notification(message, { body: description, silent: true });
+      } catch (error) {
+        console.warn('系统通知创建失败', error);
+      }
+    }
+
+    function probeNotificationPermission() {
+      if (!('permissions' in navigator)) return;
+      try {
+        navigator.permissions.query({ name: 'notifications' }).then((status) => {
+          notificationState = status.state;
+          status.onchange = () => {
+            notificationState = status.state;
+            updateNotificationStatus();
+          };
+          updateNotificationStatus();
+        });
+      } catch (error) {
+        console.warn('权限查询失败', error);
+      }
+    }
+
+    function checkNotificationSettings() {
+      if (!('Notification' in window)) {
+        showToast('通知不支持', '当前浏览器不支持 Notification API。');
+        if (notificationHintEl) notificationHintEl.textContent = '浏览器不支持桌面通知。';
+        return;
+      }
+      const perm = Notification.permission || notificationState || 'default';
+      const secure = window.isSecureContext;
+      const fromFile = location.protocol === 'file:';
+      let hint = '';
+      if (!secure || fromFile) {
+        hint = '当前页面非安全上下文，Chrome/Edge 通知可能无法正常弹出。建议使用 localhost 或本地服务器运行页面。';
+      } else if (perm === 'default') {
+        hint = '通知权限尚未询问，请先点击“启用提醒”。';
+      } else if (perm === 'denied') {
+        hint = '通知被拒绝。请在浏览器设置中允许该站点通知。';
+      } else if (perm === 'granted') {
+        hint = '通知权限已允许。点击“测试提醒”验证系统通知是否能正常弹出。';
+      }
+      if (notificationHintEl) notificationHintEl.textContent = hint;
+      showToast('通知设置检查', hint);
+    }
+
+    function hideToast() {
+      toastEl.classList.remove('show');
+    }
+
+    function getSlotId(now) {
+      return `${now.getFullYear()}-${now.getMonth()}-${now.getDate()}-${now.getHours()}-${now.getMinutes()}`;
+    }
+
+    function shouldTriggerSchedule(now) {
+      const currentMinutes = getCurrentMinutes(now);
+      const scheduleSlots = getScheduleSlots();
+      return now.getSeconds() === 0 && scheduleSlots.includes(currentMinutes);
+    }
+
+    function checkAndTriggerScheduleReminder(now) {
+      if (!shouldTriggerSchedule(now)) return;
+      if (!isUserActive()) return;
+      const slotId = getSlotId(now);
+      if (slotId === lastRemindedSlot) return;
+      lastRemindedSlot = slotId;
+      reminderCount += 1;
+      showToast('该喝水了', '现在是固定提醒时间，补充一杯水保持精力。');
+    }
+
+    function tickOldTimer() {
+      if (!oldActive) return;
+      if (oldRemaining > 0) {
+        oldRemaining -= 1;
+        return;
+      }
+      oldReminderCount += 1;
+      oldRemaining = oldIntervalMinutes * 60;
+      showToast('旧计时器提醒', '时间到了，补充水或休息一下。');
+    }
+
+    function toggleHiddenMode() {
+      hiddenMode = !hiddenMode;
+      document.body.classList.toggle('hidden-mode', hiddenMode);
+      updateUI();
+    }
+
+    function toggleQuietMode() {
+      quietMode = !quietMode;
+      updateUI();
+    }
+
+    function applyOldTimerSettings() {
+      const newInterval = Number(workInput.value);
+      oldIntervalMinutes = Number.isFinite(newInterval) && newInterval >= 1 ? Math.round(newInterval) : 45;
+      oldRemaining = oldIntervalMinutes * 60;
+      oldActive = true;
+      oldReminderCount = 0;
+      hideToast();
+      updateUI();
+    }
+
+    closeToastBtn.addEventListener('click', hideToast);
+    toggleHideBtn.addEventListener('click', toggleHiddenMode);
+    toggleQuietBtn.addEventListener('click', toggleQuietMode);
+    requestNotifyBtn.addEventListener('click', requestNotificationPermission);
+    testNotifyBtn.addEventListener('click', sendTestNotification);
+    checkNotifyBtn.addEventListener('click', checkNotificationSettings);
+    applyBtn.addEventListener('click', applyOldTimerSettings);
+    workInput.addEventListener('input', () => {
+      applyBtn.disabled = false;
+    });
+
+    ['mousemove', 'keydown', 'mousedown', 'touchstart'].forEach((event) => {
+      window.addEventListener(event, markActivity, { passive: true });
+    });
+
+    document.addEventListener('visibilitychange', () => {
+      if (!document.hidden) markActivity();
+      updateUI();
+    });
+
+    document.addEventListener('DOMContentLoaded', () => {
+      loadSettings();
+      document.body.classList.toggle('hidden-mode', hiddenMode);
+      probeNotificationPermission();
+      updateUI();
+      setInterval(() => {
+        const now = new Date();
+        updateUI();
+        checkAndTriggerScheduleReminder(now);
+        tickOldTimer();
+      }, 1000);
+    });
+  </script>
+</body>
+</html>

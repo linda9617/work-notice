@@ -461,6 +461,7 @@
     let hiddenMode = false;
     let quietMode = false;
     let lastRemindedSlot = null;
+    let lastScheduleRemindTime = null;
     let notificationState = 'default';
 
     let oldIntervalMinutes = 45;
@@ -839,10 +840,6 @@
       showToast('已保存提醒', r.text || '手动提醒已更新');
     }
 
-    function getSlotId(now) {
-      return `${now.getFullYear()}-${now.getMonth()}-${now.getDate()}-${now.getHours()}-${now.getMinutes()}`;
-    }
-
     function shouldTriggerSchedule(now) {
       const currentMinutes = getCurrentMinutes(now);
       const scheduleSlots = getScheduleSlots();
@@ -852,9 +849,12 @@
     function checkAndTriggerScheduleReminder(now) {
       if (!shouldTriggerSchedule(now)) return;
       if (!isUserActive()) return;
-      const slotId = getSlotId(now);
-      if (slotId === lastRemindedSlot) return;
-      lastRemindedSlot = slotId;
+      
+      // 用当前时刻分钟级时间戳作为 key，确保整分钟内只触发一次
+      const currentMinuteTs = Math.floor(now.getTime() / 60000) * 60000;
+      if (lastScheduleRemindTime === currentMinuteTs) return;
+      
+      lastScheduleRemindTime = currentMinuteTs;
       reminderCount += 1;
       showToast('该喝水了', '现在是固定提醒时间，补充一杯水保持精力。');
     }

@@ -365,11 +365,11 @@
       </div>
     </div>
 
-    <div id="manualEditPanel" style="display:none;position:fixed;right:20px;bottom:20px;width:320px;padding:16px;background:#fff;border:1px solid rgba(148,163,184,0.12);border-radius:12px;box-shadow:0 18px 38px rgba(15,23,42,0.12);z-index:40;">
+    <div id="manualEditPanel" style="display:none;position:fixed;right:20px;bottom:20px;width:320px;padding:16px;background:#fff;border:1px solid rgba(148,163,184,0.12);border-radius:12px;box-shadow:0 20px 60px rgba(0,0,0,0.12);z-index:30;">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;"><strong>编辑提醒</strong><button id="manualEditClose" class="icon-btn">关闭</button></div>
       <label>提醒内容<input id="manualEditText" type="text" style="width:100%;padding:8px;margin-top:6px;border-radius:8px;border:1px solid rgba(148,163,184,0.2);" /></label>
       <label style="margin-top:8px;">触发时间<input id="manualEditScheduled" type="datetime-local" style="width:100%;padding:8px;margin-top:6px;border-radius:8px;border:1px solid rgba(148,163,184,0.2);" /></label>
-      <label style="margin-top:8px;">重复规则<select id="manualEditRepeat" style="width:100%;padding:8px;margin-top:6px;border-radius:8px;border:1px solid rgba(148,163,184,0.2);"><option value="none">不重复</option><option value="daily">每天</option></select></label>
+      <label style="margin-top:8px;">重复规则<select id="manualEditRepeat" style="width:100%;padding:8px;margin-top:6px;border-radius:8px;border:1px solid rgba(148,163,184,0.2);"><option value="none">无</option><option value="daily">每天</option></select></label>
       <div style="display:flex;gap:8px;margin-top:12px;"><button class="primary" id="manualEditSave">保存</button><button class="icon-btn" id="manualEditCancel">取消</button></div>
     </div>
   </section>
@@ -721,17 +721,16 @@
         if (!r.scheduledAt) continue;
         const sched = Date.parse(r.scheduledAt);
         if (isNaN(sched)) continue;
-        if (sched <= nowTs) {
+        // 只在 triggered 为 false 且时间已到时触发提醒，触发后立即标记为 triggered
+        if (!r.triggered && sched <= nowTs) {
           // handle repeat rules
           if (r.repeat === 'daily') {
             // reschedule next day same time
             const next = new Date(sched);
             next.setDate(next.getDate() + 1);
             r.scheduledAt = next.toISOString();
-            r.triggered = false;
-          } else {
-            r.triggered = true;
           }
+          r.triggered = true;
           changed = true;
           showToast(r.text || '手动提醒', `手动提醒触发：${r.text || ''}`);
         }
@@ -760,7 +759,7 @@
           <li style="display:flex;justify-content:space-between;align-items:center;padding:8px;background:rgba(250,250,250,0.9);border-radius:10px;border:1px solid rgba(200,200,200,0.12);">
             <div style="flex:1;margin-right:12px;font-size:0.95rem;color:#263238;">${short}</div>
             <div style="display:flex;gap:8px;">
-              ${r.disabled ? `<button class="icon-btn restore-btn" data-id="${r.id}">恢复</button><button class="icon-btn purge-btn" data-id="${r.id}">永久删除</button>` : `<button class="icon-btn edit-btn" data-id="${r.id}">编辑</button><button class="icon-btn delete-btn" data-id="${r.id}">删除</button><button class="icon-btn disable-btn" data-id="${r.id}">不再提醒</button>`}
+              ${r.disabled ? `<button class="icon-btn restore-btn" data-id="${r.id}">恢复</button><button class="icon-btn purge-btn" data-id="${r.id}">永久删除</button>` : `<button class="icon-btn edit-btn" data-id="${r.id}">编辑</button><button class="icon-btn disable-btn" data-id="${r.id}">忽略</button><button class="icon-btn delete-btn" data-id="${r.id}">删除</button>`}
             </div>
           </li>`;
       }).join('');

@@ -7,100 +7,142 @@
   <style>
     :root {
       color-scheme: light;
-      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-      background: #fbfbfb;
-      color: #23272b;
+      font-family: "Inter", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background: #f7f8fb;
+      color: #1f2937;
     }
     * { box-sizing: border-box; }
     html, body { margin: 0; padding: 0; }
     body {
       min-height: 100vh;
       padding: 24px;
-      background: linear-gradient(180deg, #fdfdfd 0%, #eceff3 100%);
+      background: radial-gradient(circle at top left, rgba(255,255,255,0.9), transparent 35%),
+                  linear-gradient(180deg, #ffffff 0%, #f5f7fb 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 18px;
     }
     .toolbar {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      gap: 12px;
-      margin-bottom: 18px;
+      gap: 14px;
+      margin-bottom: 20px;
+      padding: 18px 22px;
+      border-radius: 22px;
+      background: rgba(255, 255, 255, 0.85);
+      border: 1px solid rgba(148, 163, 184, 0.16);
+      box-shadow: 0 20px 50px rgba(15, 23, 42, 0.08);
+      width: min(540px, 100%);
     }
     .toolbar .title {
       display: flex;
       flex-direction: column;
-      gap: 4px;
+      gap: 2px;
     }
     .toolbar h1 {
       margin: 0;
-      font-size: 1.3rem;
-      letter-spacing: 0.02em;
+      font-size: 1.4rem;
+      letter-spacing: 0.03em;
+      color: #111827;
     }
     .toolbar .subtitle {
       margin: 0;
-      color: #626b75;
+      color: #6b7280;
       font-size: 0.92rem;
     }
     .button-group {
       display: flex;
-      gap: 8px;
+      gap: 10px;
       flex-wrap: wrap;
     }
     button.icon-btn, button.action-btn {
-      border: 1px solid #c8d2dc;
-      background: #fff;
-      color: #333;
+      border: 1px solid rgba(148, 163, 184, 0.24);
+      background: rgba(255, 255, 255, 0.96);
+      color: #1f2937;
       border-radius: 999px;
       padding: 8px 14px;
       cursor: pointer;
       font-size: 0.92rem;
+      transition: all 0.2s ease;
+      box-shadow: 0 8px 20px rgba(15, 23, 42, 0.04);
     }
-    button.icon-btn:hover, button.action-btn:hover { background: #f0f4fb; }
+    button.icon-btn:hover, button.action-btn:hover {
+      transform: translateY(-1px);
+      background: #f8fafc;
+      border-color: rgba(148, 163, 184, 0.36);
+    }
     .card {
-      background: #fff;
-      border: 1px solid #d8dee7;
-      border-radius: 18px;
-      box-shadow: 0 16px 35px rgba(31, 41, 55, 0.08);
-      padding: 22px;
-      max-width: 640px;
+      background: #ffffff;
+      border: 1px solid rgba(148, 163, 184, 0.18);
+      border-radius: 24px;
+      box-shadow: 0 24px 60px rgba(15, 23, 42, 0.08);
+      padding: 20px;
+      width: min(520px, 100%);
+      backdrop-filter: blur(10px);
     }
     .status {
       display: grid;
-      gap: 14px;
-      margin-bottom: 18px;
+      gap: 12px;
+      margin-bottom: 14px;
     }
     .status-row {
       display: grid;
       grid-template-columns: 1fr auto;
       align-items: center;
       gap: 12px;
-      padding: 16px;
-      border-radius: 16px;
-      background: #f7fafd;
-      border: 1px solid #e3eaf2;
+      padding: 14px 16px;
+      border-radius: 22px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.95), rgba(249,250,251,0.95));
+      border: 1px solid rgba(148, 163, 184, 0.16);
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.5);
     }
-    .status-row strong { font-size: 1rem; color: #556078; }
-    .status-row .value { text-align: right; font-size: 1.2rem; font-weight: 700; }
-    .status-row .small { color: #707a8d; font-size: 0.92rem; }
+    .status-row strong { font-size: 1rem; color: #334155; }
+    .status-row .value { text-align: right; font-size: 1.2rem; font-weight: 700; color: #0f172a; }
+    .status-row .small { color: #64748b; font-size: 0.9rem; }
     .controls {
       display: grid;
-      gap: 16px;
-      margin-bottom: 12px;
+      gap: 12px;
+      margin-bottom: 10px;
     }
     .controls label {
       display: grid;
-      gap: 6px;
-      font-size: 0.95rem;
-      color: #373f4b;
+      gap: 4px;
+      font-size: 0.92rem;
+      color: #334155;
     }
     .controls input {
       width: 100%;
       min-width: 0;
       padding: 10px 12px;
-      border: 1px solid #c3cbd7;
-      border-radius: 12px;
-      font-size: 1rem;
-      color: #1e293b;
+      border: 1px solid rgba(148, 163, 184, 0.22);
+      border-radius: 10px;
+      font-size: 0.95rem;
+      color: #0f172a;
+      background: #f8fafc;
     }
+    /* Styled selects: custom arrow, padding and focus ring */
+    .controls select, .toolbar select, select {
+      padding: 9px 34px 9px 10px;
+      border: 1px solid rgba(148,163,184,0.22);
+      border-radius: 10px;
+      background: #ffffff;
+      color: #0f172a;
+      font-size: 0.95rem;
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"><path fill="%236b7280" d="M7 10l5 5 5-5z"/></svg>');
+      background-repeat: no-repeat;
+      background-position: right 10px center;
+      background-size: 14px;
+      cursor: pointer;
+    }
+    .controls select:hover, .toolbar select:hover { background: #fbfdff; }
+    .controls select:focus, .controls input:focus, .toolbar select:focus { outline: none; box-shadow: 0 0 0 4px rgba(59,130,246,0.08); border-color: rgba(59,130,246,0.6); }
+    /* toolbar select should size to content */
+    .toolbar select { width: auto; padding: 8px 30px 8px 10px; }
     .controls .grid-2 {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -115,13 +157,18 @@
       width: 100%;
       padding: 12px 16px;
       border: none;
-      background: #2563eb;
-      color: #fff;
-      border-radius: 12px;
+      background: linear-gradient(135deg, #2563eb, #3b82f6);
+      color: #ffffff;
+      border-radius: 14px;
       font-size: 1rem;
       cursor: pointer;
+      box-shadow: 0 12px 24px rgba(59, 130, 246, 0.18);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
-    .controls button.primary:hover { background: #1d4ed8; }
+    .controls button.primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 14px 28px rgba(59, 130, 246, 0.24);
+    }
     .note {
       color: #5f6776;
       font-size: 0.92rem;
@@ -132,15 +179,16 @@
       position: fixed;
       right: 18px;
       bottom: 18px;
-      width: min(320px, calc(100% - 36px));
-      padding: 14px 16px;
-      border-radius: 16px;
-      background: rgba(255, 255, 255, 0.96);
-      border: 1px solid rgba(151, 163, 184, 0.28);
+      width: min(340px, calc(100% - 36px));
+      padding: 16px 18px;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.97);
+      border: 1px solid rgba(148, 163, 184, 0.22);
       display: none;
       gap: 10px;
       z-index: 20;
-      box-shadow: 0 18px 38px rgba(15, 23, 42, 0.12);
+      box-shadow: 0 24px 48px rgba(15, 23, 42, 0.14);
+      backdrop-filter: blur(16px);
     }
     .toast.show { display: grid; }
     .toast strong { font-size: 0.98rem; }
@@ -157,38 +205,75 @@
     }
     .mini-view {
       display: none;
-      padding: 14px 16px;
-      border: 1px solid #d2dae4;
-      border-radius: 18px;
-      background: #ffffff;
-      max-width: 520px;
-      box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
-      gap: 10px;
+      gap: 14px;
+      width: min(520px, 100%);
+      grid-template-columns: repeat(2, minmax(0, 1fr));
     }
     .mini-view.show { display: grid; }
-    .mini-view .row { display: flex; justify-content: space-between; gap: 12px; align-items: center; }
-    .mini-view .row strong { font-size: 1rem; }
-    .mini-view .hint { color: #5a6470; font-size: 0.9rem; }
+    .mini-box {
+      display: grid;
+      gap: 10px;
+      padding: 16px 18px;
+      border: 1px solid rgba(148, 163, 184, 0.18);
+      border-radius: 22px;
+      background: rgba(255, 255, 255, 0.96);
+      box-shadow: 0 24px 60px rgba(15, 23, 42, 0.08);
+    }
+    .mini-box .row { display: flex; justify-content: space-between; gap: 12px; align-items: center; }
+    .mini-box .row strong { font-size: 1rem; }
+    .mini-box .hint { color: #5a6470; font-size: 0.9rem; }
     body.hidden-mode .card { display: none; }
     body.hidden-mode .mini-view { display: grid; }
+    /* Prevent key UI text wrapping and show ellipsis when space is tight */
+    .status-row strong,
+    .status-row .small,
+    .status-row .value,
+    .toolbar .title,
+    .small-text,
+    #manualList li div,
+    .controls label {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    /* Accessibility and focused controls */
+    :focus-visible {
+      outline: 3px solid rgba(59,130,246,0.18);
+      outline-offset: 2px;
+      border-radius: 8px;
+    }
+
+    /* Manual list base styles */
+    #manualList { list-style:none; padding:0; margin:8px 0 0 0; display:grid; gap:8px; }
+    #manualList li { background:#ffffff; border-radius:10px; padding:8px; display:flex; align-items:center; justify-content:space-between; border:1px solid rgba(0,0,0,0.03); }
+    #manualList li div { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+
+    /* Edit panel subtle animation and responsive placement */
+    #manualEditPanel { transition: transform 0.18s ease, opacity 0.18s ease; }
+    #manualEditPanel.show { transform: translateY(0); opacity:1; }
+
+    /* Responsive tweaks */
+    @media (max-width: 640px) {
+      body { padding: 16px; }
+      .toolbar { width: 100%; padding: 12px; }
+      .card { width: 100%; padding: 14px; border-radius: 14px; }
+      .mini-view { grid-template-columns: 1fr; gap: 10px; }
+      #manualEditPanel { position: fixed; left: 8px; right: 8px; bottom: 12px; width: auto; max-width: none; }
+      .button-group { gap: 8px; }
+      button.icon-btn, button.action-btn { padding: 8px 10px; font-size: 0.88rem; border-radius: 10px; }
+    }
   </style>
 </head>
 <body>
   <div class="toolbar">
     <div class="title">
-      <h1>工作备忘</h1>
-      <p class="subtitle">简洁白板 · 喝水提醒</p>
+      <h1>备忘提醒</h1>
     </div>
     <div class="button-group">
       <button class="icon-btn" id="toggleHide">隐藏模式</button>
       <button class="icon-btn" id="toggleQuiet">静音</button>
       <button class="icon-btn" id="requestNotify">启用提醒</button>
-      <button class="icon-btn" id="testNotify">测试提醒</button>
-      <button class="icon-btn" id="checkNotify">检查通知设置</button>
     </div>
-    <div class="small-text" id="notificationStatus">通知状态：未开启</div>
-    <div class="small-text" id="notificationHint">如果在本地文件中打开，Chrome/Edge 通知可能无法正常弹出。</div>
-    <div class="small-text">建议使用本地服务器运行页面，比如：<code>python -m http.server 8000</code>，然后访问 <code>http://localhost:8000/work_timer.html</code></div>
   </div>
   <section class="card">
     <div class="status">
@@ -209,19 +294,13 @@
     </div>
     <div class="controls">
       <div class="small-text" id="activityStatus">活动状态：检测中</div>
-      <div class="small-text">允许桌面通知后，即使当前标签页在后台，也会弹出系统提醒。</div>
-      <div class="small-text">点击“测试提醒”可立即验证实际通知是否能弹出。</div>
-    </div>
-    <div class="note">
-      如果你当前不操作电脑，会话处于空闲时，提醒会暂停。<br />
-      重新恢复活动后，下一个时间点继续提醒。
     </div>
   </section>
   <section class="card">
     <div class="status">
       <div class="status-row">
         <div>
-          <strong>旧计时器</strong>
+          <strong>喝水提醒</strong>
           <div class="small">间隔提醒模式</div>
         </div>
         <div class="value" id="oldCountdown">00:00</div>
@@ -231,7 +310,7 @@
           <strong id="oldStatusLabel">当前状态：运行中</strong>
           <div class="small" id="oldCountLabel">累计提醒 0 次</div>
         </div>
-        <div class="value" id="oldModeLabel">旧计时器</div>
+        <div class="value" id="oldModeLabel">喝水提醒</div>
       </div>
     </div>
     <div class="controls">
@@ -240,24 +319,86 @@
         <input id="workMinutes" type="number" min="1" max="120" value="45" />
       </label>
       <button class="primary" id="applyBtn">保存设置并重置</button>
-      <div class="small-text">这是旧倒计时提醒，设置后会按间隔重复提醒。</div>
     </div>
-    <div class="note">
-      这个计时器和固定时间提醒同时工作。你可以把它当成老版本的番茄钟备份。
+  </section>
+  <section class="card">
+    <div class="status">
+      <div class="status-row">
+        <div>
+          <strong>手动提醒</strong>
+          <div class="small" id="manualSummary">各类提醒都可手动添加。</div>
+        </div>
+        <div class="value" id="manualCount">0</div>
+      </div>
+    </div>
+    <div class="controls">
+      <label>
+        提醒类型
+        <select id="manualType">
+          <option value="time">指定时间</option>
+          <option value="delay">延迟（分钟）</option>
+        </select>
+      </label>
+      <label id="manualTimeLabel">
+        指定时间
+        <input id="manualTime" type="time" />
+      </label>
+      <label id="manualDelayLabel" style="display:none;">
+        延迟（分钟）
+        <input id="manualDelay" type="number" min="1" placeholder="例如：10" />
+      </label>
+      <label>
+        提醒内容
+        <input id="manualText" type="text" placeholder="例如：喝水、站起来活动" />
+      </label>
+      <button class="primary" id="addManualBtn">添加提醒</button>
+    </div>
+    <div class="controls">
+      <div>
+        <div class="small-text">已安排的手动提醒</div>
+      </div>
+      <ul id="manualList" style="list-style:none;padding:0;margin:8px 0 0 0;display:grid;gap:8px;"></ul>
+      <div style="display:flex;gap:8px;align-items:center;margin-top:8px;">
+        <button class="icon-btn" id="toggleShowIgnored">显示已忽略提醒</button>
+        <div style="flex:1"></div>
+        <div class="small-text" id="manualPageInfo"></div>
+      </div>
+    </div>
+
+    <div id="manualEditPanel" style="display:none;position:fixed;right:20px;bottom:20px;width:320px;padding:16px;background:#fff;border:1px solid rgba(148,163,184,0.12);border-radius:12px;box-shadow:0 18px 38px rgba(15,23,42,0.12);z-index:40;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;"><strong>编辑提醒</strong><button id="manualEditClose" class="icon-btn">关闭</button></div>
+      <label>提醒内容<input id="manualEditText" type="text" style="width:100%;padding:8px;margin-top:6px;border-radius:8px;border:1px solid rgba(148,163,184,0.2);" /></label>
+      <label style="margin-top:8px;">触发时间<input id="manualEditScheduled" type="datetime-local" style="width:100%;padding:8px;margin-top:6px;border-radius:8px;border:1px solid rgba(148,163,184,0.2);" /></label>
+      <label style="margin-top:8px;">重复规则<select id="manualEditRepeat" style="width:100%;padding:8px;margin-top:6px;border-radius:8px;border:1px solid rgba(148,163,184,0.2);"><option value="none">不重复</option><option value="daily">每天</option></select></label>
+      <div style="display:flex;gap:8px;margin-top:12px;"><button class="primary" id="manualEditSave">保存</button><button class="icon-btn" id="manualEditCancel">取消</button></div>
     </div>
   </section>
   <section class="mini-view" id="miniView">
-    <div class="row">
-      <strong>专注计时</strong>
-      <span class="hint" id="miniHint">点击右上角切换回完整视图</span>
+    <div class="mini-box">
+      <div class="row">
+        <strong>固定提醒</strong>
+      </div>
+      <div class="row">
+        <span>下次</span>
+        <strong id="miniNextReminder">--:--</strong>
+      </div>
+      <div class="row">
+        <span id="miniScheduleStatus">等待提醒</span>
+        <span id="miniScheduleCount">提醒 0 次</span>
+      </div>
     </div>
-    <div class="row">
-      <span>剩余</span>
-      <strong id="miniCountdown">00:00</strong>
-    </div>
-    <div class="row">
-      <span id="miniStatus">专注中</span>
-      <span id="miniWaterCount">喝水 0 次</span>
+    <div class="mini-box">
+      <div class="row">
+        <strong>喝水提醒</strong>
+      </div>
+      <div class="row">
+        <span>剩余</span>
+        <strong id="miniCountdown">00:00</strong>
+      </div>
+      <div class="row">
+        <span id="miniStatus">专注中</span>
+        <span id="miniWaterCount">喝水 0 次</span>
+      </div>
     </div>
   </section>
   <aside class="toast" id="toast">
@@ -276,19 +417,36 @@
     const oldModeEl = document.getElementById('oldModeLabel');
     const activityStatusEl = document.getElementById('activityStatus');
     const notificationStatusEl = document.getElementById('notificationStatus');
-    const notificationHintEl = document.getElementById('notificationHint');
     const toastEl = document.getElementById('toast');
     const closeToastBtn = document.getElementById('closeToast');
     const toggleHideBtn = document.getElementById('toggleHide');
     const toggleQuietBtn = document.getElementById('toggleQuiet');
     const requestNotifyBtn = document.getElementById('requestNotify');
-    const testNotifyBtn = document.getElementById('testNotify');
-    const checkNotifyBtn = document.getElementById('checkNotify');
     const workInput = document.getElementById('workMinutes');
     const applyBtn = document.getElementById('applyBtn');
+    const manualTypeEl = document.getElementById('manualType');
+    const manualTimeEl = document.getElementById('manualTime');
+    const manualDelayEl = document.getElementById('manualDelay');
+    const manualTextEl = document.getElementById('manualText');
+    const manualCountEl = document.getElementById('manualCount');
+    const manualSummaryEl = document.getElementById('manualSummary');
+    const addManualBtn = document.getElementById('addManualBtn');
+    const manualListEl = document.getElementById('manualList');
+    const toggleShowIgnoredBtn = document.getElementById('toggleShowIgnored');
+    const manualPageInfoEl = document.getElementById('manualPageInfo');
+    const manualEditPanel = document.getElementById('manualEditPanel');
+    const manualEditText = document.getElementById('manualEditText');
+    const manualEditScheduled = document.getElementById('manualEditScheduled');
+    const manualEditRepeat = document.getElementById('manualEditRepeat');
+    const manualEditSave = document.getElementById('manualEditSave');
+    const manualEditCancel = document.getElementById('manualEditCancel');
+    const manualEditClose = document.getElementById('manualEditClose');
     const miniCountdownEl = document.getElementById('miniCountdown');
     const miniStatusEl = document.getElementById('miniStatus');
     const miniWaterCountEl = document.getElementById('miniWaterCount');
+    const miniNextReminderEl = document.getElementById('miniNextReminder');
+    const miniScheduleStatusEl = document.getElementById('miniScheduleStatus');
+    const miniScheduleCountEl = document.getElementById('miniScheduleCount');
     const toastTitle = document.getElementById('toastTitle');
     const toastBody = document.getElementById('toastBody');
 
@@ -309,6 +467,9 @@
     let oldRemaining = oldIntervalMinutes * 60;
     let oldActive = true;
     let oldReminderCount = 0;
+    let manualReminders = [];
+    let manualEditingId = null;
+    let showIgnored = false;
 
     let timerId = null;
 
@@ -325,6 +486,8 @@
         if (typeof config.oldRemaining === 'number') oldRemaining = config.oldRemaining;
         if (typeof config.oldActive === 'boolean') oldActive = config.oldActive;
         if (typeof config.oldReminderCount === 'number') oldReminderCount = config.oldReminderCount;
+        if (Array.isArray(config.manualReminders)) manualReminders = config.manualReminders.filter(r => r.type !== 'custom').map(r => ({ ...r, disabled: !!r.disabled }));
+        if (typeof config.showIgnored === 'boolean') showIgnored = config.showIgnored;
         workInput.value = oldIntervalMinutes;
       } catch (error) {
         console.warn('读取设置失败', error);
@@ -341,6 +504,8 @@
         oldRemaining,
         oldActive,
         oldReminderCount,
+        manualReminders,
+        showIgnored,
       };
       localStorage.setItem(STORAGE_KEY, JSON.stringify(config));
     }
@@ -383,39 +548,11 @@
       return '通知未开启';
     }
 
-    function getNotificationHintText() {
-      if (!('Notification' in window)) return '浏览器不支持桌面通知。';
-      const fromFile = location.protocol === 'file:';
-      if (!window.isSecureContext || fromFile) {
-        return '当前页面非安全上下文，Chrome/Edge 通知可能无法正常弹出。建议使用 localhost 或本地服务器运行页面，例如：python -m http.server 8000。';
-      }
-      return '允许通知后，Chrome/Edge 会在后台弹出桌面提醒。';
-    }
-
     function updateNotificationStatus() {
       if (!notificationStatusEl) return;
       notificationStatusEl.textContent = `通知状态：${getNotificationStatusText()}`;
-      if (notificationHintEl) notificationHintEl.textContent = getNotificationHintText();
     }
 
-    function sendTestNotification() {
-      if (!('Notification' in window)) {
-        showToast('通知不支持', '浏览器不支持桌面通知。');
-        return;
-      }
-      const perm = Notification.permission || notificationState || 'default';
-      if (perm !== 'granted') {
-        showToast('请先启用通知', '点击“启用提醒”并允许浏览器通知权限。');
-        return;
-      }
-      try {
-        new Notification('测试提醒', { body: '如果你看到这个通知，系统通知工作正常。', silent: true });
-        showToast('测试已发送', '已尝试发送桌面通知。');
-      } catch (error) {
-        console.warn('测试通知创建失败', error);
-        showToast('测试失败', '通知无法创建，检查浏览器/系统通知设置。');
-      }
-    }
 
     function formatTime(sec) {
       const minutes = Math.floor(sec / 60).toString().padStart(2, '0');
@@ -471,10 +608,19 @@
       oldCountdownEl.textContent = formatTime(oldRemaining);
       oldStatusEl.textContent = oldActive ? '当前状态：运行中' : '当前状态：暂停';
       oldCountEl.textContent = `累计提醒 ${oldReminderCount} 次`;
-      oldModeEl.textContent = '旧计时器';
+      oldModeEl.textContent = '喝水提醒';
       miniCountdownEl.textContent = formatTime(oldRemaining);
       miniStatusEl.textContent = oldActive ? '专注中' : '暂停中';
       miniWaterCountEl.textContent = `喝水 ${reminderCount} 次`;
+      miniNextReminderEl.textContent = nextSlot !== null ? formatSlot(nextSlot) : '--:--';
+      miniScheduleStatusEl.textContent = isUserActive() ? '等待提醒' : '空闲';
+      miniScheduleCountEl.textContent = `提醒 ${reminderCount} 次`;
+      manualCountEl.textContent = manualReminders.length.toString();
+      manualSummaryEl.textContent = manualReminders.length
+        ? `最新：${manualReminders[manualReminders.length - 1].text}`
+        : '各类提醒都可手动添加。';
+      renderManualList();
+      if (toggleShowIgnoredBtn) toggleShowIgnoredBtn.textContent = showIgnored ? '隐藏已忽略提醒' : '显示已忽略提醒';
       toggleHideBtn.textContent = hiddenMode ? '退出隐藏' : '隐藏模式';
       toggleQuietBtn.textContent = quietMode ? '取消静音' : '静音';
       updateNotificationStatus();
@@ -512,31 +658,186 @@
       }
     }
 
-    function checkNotificationSettings() {
-      if (!('Notification' in window)) {
-        showToast('通知不支持', '当前浏览器不支持 Notification API。');
-        if (notificationHintEl) notificationHintEl.textContent = '浏览器不支持桌面通知。';
-        return;
-      }
-      const perm = Notification.permission || notificationState || 'default';
-      const secure = window.isSecureContext;
-      const fromFile = location.protocol === 'file:';
-      let hint = '';
-      if (!secure || fromFile) {
-        hint = '当前页面非安全上下文，Chrome/Edge 通知可能无法正常弹出。建议使用 localhost 或本地服务器运行页面。';
-      } else if (perm === 'default') {
-        hint = '通知权限尚未询问，请先点击“启用提醒”。';
-      } else if (perm === 'denied') {
-        hint = '通知被拒绝。请在浏览器设置中允许该站点通知。';
-      } else if (perm === 'granted') {
-        hint = '通知权限已允许。点击“测试提醒”验证系统通知是否能正常弹出。';
-      }
-      if (notificationHintEl) notificationHintEl.textContent = hint;
-      showToast('通知设置检查', hint);
-    }
 
     function hideToast() {
       toastEl.classList.remove('show');
+    }
+
+    function addManualReminder() {
+      const type = manualTypeEl ? manualTypeEl.value : 'time';
+      const now = new Date();
+      const text = (manualTextEl && manualTextEl.value ? manualTextEl.value.trim() : '') || (type === 'time' ? '指定时间提醒' : '延迟提醒');
+      let scheduledAt = now;
+      if (type === 'time' && manualTimeEl && manualTimeEl.value) {
+        const parts = manualTimeEl.value.split(':').map(Number);
+        if (parts.length >= 2) {
+          scheduledAt = new Date(now.getFullYear(), now.getMonth(), now.getDate(), parts[0], parts[1], 0, 0);
+          if (scheduledAt <= now) scheduledAt.setDate(scheduledAt.getDate() + 1);
+        }
+      } else if (type === 'delay' && manualDelayEl && manualDelayEl.value) {
+        const mins = Math.max(1, Number(manualDelayEl.value) || 0);
+        scheduledAt = new Date(now.getTime() + mins * 60 * 1000);
+      } else {
+        // immediate/fallback — schedule now
+        scheduledAt = now;
+      }
+
+      const reminder = {
+        id: Date.now(),
+        type,
+        text,
+        scheduledAt: scheduledAt.toISOString(),
+        createdAt: now.toISOString(),
+        triggered: false,
+      };
+      manualReminders.push(reminder);
+
+      if (manualTextEl) manualTextEl.value = '';
+      if (manualTimeEl) manualTimeEl.value = '';
+      if (manualDelayEl) manualDelayEl.value = '';
+
+      saveSettings();
+      updateUI();
+    }
+
+    function updateManualInputs() {
+      if (!manualTypeEl) return;
+      const type = manualTypeEl.value;
+      const timeLabel = document.getElementById('manualTimeLabel');
+      const delayLabel = document.getElementById('manualDelayLabel');
+      if (timeLabel) timeLabel.style.display = type === 'time' ? '' : 'none';
+      if (delayLabel) delayLabel.style.display = type === 'delay' ? '' : 'none';
+      if (manualTextEl) {
+        manualTextEl.placeholder = type === 'time' ? '例如：在 18:30 提醒' : type === 'delay' ? '例如：10 分钟后提醒' : '例如：喝水、站起来活动';
+      }
+    }
+
+    function checkManualReminders(now) {
+      if (!Array.isArray(manualReminders) || manualReminders.length === 0) return;
+      const nowTs = now.getTime();
+      let changed = false;
+      for (const r of manualReminders) {
+        if (r.disabled) continue;
+        if (!r.scheduledAt) continue;
+        const sched = Date.parse(r.scheduledAt);
+        if (isNaN(sched)) continue;
+        if (sched <= nowTs) {
+          // handle repeat rules
+          if (r.repeat === 'daily') {
+            // reschedule next day same time
+            const next = new Date(sched);
+            next.setDate(next.getDate() + 1);
+            r.scheduledAt = next.toISOString();
+            r.triggered = false;
+          } else {
+            r.triggered = true;
+          }
+          changed = true;
+          showToast(r.text || '手动提醒', `手动提醒触发：${r.text || ''}`);
+        }
+      }
+      if (changed) {
+        saveSettings();
+        updateUI();
+      }
+    }
+
+    function renderManualList() {
+      if (!manualListEl) return;
+      // always sort by scheduled time ascending
+      let list = manualReminders.slice();
+      list.sort((a,b) => Date.parse(a.scheduledAt||0) - Date.parse(b.scheduledAt||0));
+      // filter ignored based on toggle
+      const active = list.filter(r => !r.disabled);
+      const ignored = list.filter(r => r.disabled);
+      const pageItems = (showIgnored ? ignored : active);
+      manualListEl.innerHTML = pageItems.map((r) => {
+        const sched = r.scheduledAt ? new Date(r.scheduledAt) : null;
+        const timeText = sched ? sched.toLocaleString() : '--';
+        const status = r.triggered ? '已触发' : (r.repeat === 'daily' ? '重复' : '等待');
+        const short = `${r.text || '[无内容]'} · ${timeText} · ${status}`;
+        return `
+          <li style="display:flex;justify-content:space-between;align-items:center;padding:8px;background:rgba(250,250,250,0.9);border-radius:10px;border:1px solid rgba(200,200,200,0.12);">
+            <div style="flex:1;margin-right:12px;font-size:0.95rem;color:#263238;">${short}</div>
+            <div style="display:flex;gap:8px;">
+              ${r.disabled ? `<button class="icon-btn restore-btn" data-id="${r.id}">恢复</button><button class="icon-btn purge-btn" data-id="${r.id}">永久删除</button>` : `<button class="icon-btn edit-btn" data-id="${r.id}">编辑</button><button class="icon-btn delete-btn" data-id="${r.id}">删除</button><button class="icon-btn disable-btn" data-id="${r.id}">不再提醒</button>`}
+            </div>
+          </li>`;
+      }).join('');
+      // show total count
+      if (manualPageInfoEl) manualPageInfoEl.textContent = `${(showIgnored ? ignored.length : active.length)} 条`;
+    }
+
+    function deleteManualReminder(id) {
+      const idx = manualReminders.findIndex((x) => x.id === id);
+      if (idx === -1) return;
+      const removed = manualReminders.splice(idx, 1)[0];
+      saveSettings();
+      updateUI();
+    }
+
+    function disableManualReminder(id) {
+      const r = manualReminders.find((x) => x.id === id);
+      if (!r) return;
+      r.disabled = true;
+      saveSettings();
+      updateUI();
+      showToast('已标记为不再提醒', r.text || '已忽略该提醒');
+    }
+
+    function restoreManualReminder(id) {
+      const r = manualReminders.find((x) => x.id === id);
+      if (!r) return;
+      r.disabled = false;
+      saveSettings();
+      updateUI();
+      showToast('已恢复提醒', r.text || '已恢复该提醒');
+    }
+
+    function purgeManualReminder(id) {
+      deleteManualReminder(id);
+    }
+
+    function editManualReminder(id) {
+      const r = manualReminders.find((x) => x.id === id);
+      if (!r) return;
+      manualEditingId = id;
+      if (manualEditText) manualEditText.value = r.text || '';
+      if (manualEditRepeat) manualEditRepeat.value = r.repeat || 'none';
+      if (manualEditScheduled) {
+        if (r.scheduledAt) {
+          const d = new Date(r.scheduledAt);
+          const pad = (n) => n.toString().padStart(2,'0');
+          const local = `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+          manualEditScheduled.value = local;
+        } else {
+          manualEditScheduled.value = '';
+        }
+      }
+      if (manualEditPanel) manualEditPanel.style.display = '';
+    }
+
+    function closeEditPanel() {
+      manualEditingId = null;
+      if (manualEditPanel) manualEditPanel.style.display = 'none';
+    }
+
+    function saveEditPanel() {
+      if (!manualEditingId) return;
+      const r = manualReminders.find((x) => x.id === manualEditingId);
+      if (!r) return;
+      if (manualEditText) r.text = manualEditText.value.trim() || r.text;
+      if (manualEditRepeat) r.repeat = manualEditRepeat.value || 'none';
+      if (manualEditScheduled && manualEditScheduled.value) {
+        // value is local datetime like YYYY-MM-DDTHH:MM
+        const dt = new Date(manualEditScheduled.value);
+        if (!isNaN(dt)) r.scheduledAt = dt.toISOString();
+      }
+      r.triggered = false;
+      saveSettings();
+      updateUI();
+      closeEditPanel();
+      showToast('已保存提醒', r.text || '手动提醒已更新');
     }
 
     function getSlotId(now) {
@@ -567,7 +868,7 @@
       }
       oldReminderCount += 1;
       oldRemaining = oldIntervalMinutes * 60;
-      showToast('旧计时器提醒', '时间到了，补充水或休息一下。');
+      showToast('喝水提醒', '时间到了，补充水或休息一下。');
     }
 
     function toggleHiddenMode() {
@@ -595,8 +896,25 @@
     toggleHideBtn.addEventListener('click', toggleHiddenMode);
     toggleQuietBtn.addEventListener('click', toggleQuietMode);
     requestNotifyBtn.addEventListener('click', requestNotificationPermission);
-    testNotifyBtn.addEventListener('click', sendTestNotification);
-    checkNotifyBtn.addEventListener('click', checkNotificationSettings);
+    if (manualTypeEl) manualTypeEl.addEventListener('change', updateManualInputs);
+    addManualBtn.addEventListener('click', addManualReminder);
+    if (manualListEl) {
+      manualListEl.addEventListener('click', (e) => {
+        const btn = e.target.closest('button');
+        if (!btn) return;
+        const id = Number(btn.getAttribute('data-id')) || null;
+        if (!id) return;
+        if (btn.classList.contains('delete-btn')) deleteManualReminder(id);
+        else if (btn.classList.contains('edit-btn')) editManualReminder(id);
+        else if (btn.classList.contains('disable-btn')) disableManualReminder(id);
+        else if (btn.classList.contains('restore-btn')) restoreManualReminder(id);
+        else if (btn.classList.contains('purge-btn')) purgeManualReminder(id);
+      });
+    }
+    if (toggleShowIgnoredBtn) toggleShowIgnoredBtn.addEventListener('click', () => { showIgnored = !showIgnored; toggleShowIgnoredBtn.textContent = showIgnored ? '隐藏已忽略提醒' : '显示已忽略提醒'; saveSettings(); updateUI(); });
+    if (manualEditCancel) manualEditCancel.addEventListener('click', closeEditPanel);
+    if (manualEditClose) manualEditClose.addEventListener('click', closeEditPanel);
+    if (manualEditSave) manualEditSave.addEventListener('click', saveEditPanel);
     applyBtn.addEventListener('click', applyOldTimerSettings);
     workInput.addEventListener('input', () => {
       applyBtn.disabled = false;
@@ -616,11 +934,13 @@
       document.body.classList.toggle('hidden-mode', hiddenMode);
       probeNotificationPermission();
       updateUI();
+      updateManualInputs();
       setInterval(() => {
         const now = new Date();
         updateUI();
         checkAndTriggerScheduleReminder(now);
         tickOldTimer();
+        checkManualReminders(now);
       }, 1000);
     });
   </script>

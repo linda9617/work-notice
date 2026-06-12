@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>工作备忘</title>
+  <title>Work Notice</title>
   <style>
     :root {
       color-scheme: light;
@@ -267,144 +267,144 @@
 <body>
   <div class="toolbar">
     <div class="title">
-      <h1>备忘提醒</h1>
+      <h1>Work Reminders</h1>
     </div>
     <div class="button-group">
-      <button class="icon-btn" id="toggleHide">隐藏模式</button>
-      <button class="icon-btn" id="toggleQuiet">静音</button>
-      <button class="icon-btn" id="requestNotify">启用提醒</button>
+      <button class="icon-btn" id="toggleHide">Hide Mode</button>
+      <button class="icon-btn" id="toggleQuiet">Mute</button>
+      <button class="icon-btn" id="requestNotify">Enable Notifications</button>
     </div>
   </div>
   <section class="card">
     <div class="status">
       <div class="status-row">
         <div>
-          <strong>固定提醒</strong>
-          <div class="small">16:30-24:00 每0.5小时</div>
+          <strong>Fixed Reminders</strong>
+          <div class="small">16:30-24:00 Every 30 mins</div>
         </div>
         <div class="value" id="currentTime">--:--:--</div>
       </div>
       <div class="status-row">
         <div>
-          <strong id="scheduleStatusLabel">当前状态：等待提醒</strong>
-          <div class="small" id="scheduleCountLabel">累计提醒 0 次</div>
+          <strong id="scheduleStatusLabel">Status: Waiting</strong>
+          <div class="small" id="scheduleCountLabel">Total reminders: 0</div>
         </div>
         <div class="value" id="nextReminder">--:--</div>
       </div>
     </div>
     <div class="controls">
-      <div class="small-text" id="activityStatus">活动状态：检测中</div>
+      <div class="small-text" id="activityStatus">Activity: Detecting...</div>
     </div>
   </section>
   <section class="card">
     <div class="status">
       <div class="status-row">
         <div>
-          <strong>喝水提醒</strong>
-          <div class="small">间隔提醒模式</div>
+          <strong>Water Reminders</strong>
+          <div class="small">Interval-based mode</div>
         </div>
         <div class="value" id="oldCountdown">00:00</div>
       </div>
       <div class="status-row">
         <div>
-          <strong id="oldStatusLabel">当前状态：运行中</strong>
-          <div class="small" id="oldCountLabel">累计提醒 0 次</div>
+          <strong id="oldStatusLabel">Status: Running</strong>
+          <div class="small" id="oldCountLabel">Total reminders: 0</div>
         </div>
-        <div class="value" id="oldModeLabel">喝水提醒</div>
+        <div class="value" id="oldModeLabel">Water Reminder</div>
       </div>
     </div>
     <div class="controls">
       <label>
-        计时间隔（分钟）
+        Interval (minutes)
         <input id="workMinutes" type="number" min="1" max="120" value="45" />
       </label>
-      <button class="primary" id="applyBtn">保存设置并重置</button>
+      <button class="primary" id="applyBtn">Save Settings & Reset</button>
     </div>
   </section>
   <section class="card">
     <div class="status">
       <div class="status-row">
         <div>
-          <strong>手动提醒</strong>
-          <div class="small" id="manualSummary">各类提醒都可手动添加。</div>
+          <strong>Custom Reminders</strong>
+          <div class="small" id="manualSummary">Add reminders as needed.</div>
         </div>
         <div class="value" id="manualCount">0</div>
       </div>
     </div>
     <div class="controls">
       <label>
-        提醒类型
+        Reminder Type
         <select id="manualType">
-          <option value="time">指定时间</option>
-          <option value="delay">延迟（分钟）</option>
+          <option value="time">Specific Time</option>
+          <option value="delay">Delay (minutes)</option>
         </select>
       </label>
       <label id="manualTimeLabel">
-        指定时间
+        Specific Time
         <input id="manualTime" type="time" />
       </label>
       <label id="manualDelayLabel" style="display:none;">
-        延迟（分钟）
-        <input id="manualDelay" type="number" min="1" placeholder="例如：10" />
+        Delay (minutes)
+        <input id="manualDelay" type="number" min="1" placeholder="e.g. 10" />
       </label>
       <label>
-        提醒内容
-        <input id="manualText" type="text" placeholder="例如：喝水、站起来活动" />
+        Reminder Text
+        <input id="manualText" type="text" placeholder="e.g. Drink water, Stand up" />
       </label>
-      <button class="primary" id="addManualBtn">添加提醒</button>
+      <button class="primary" id="addManualBtn">Add Reminder</button>
     </div>
     <div class="controls">
       <div>
-        <div class="small-text">已安排的手动提醒</div>
+        <div class="small-text">Scheduled Reminders</div>
       </div>
       <ul id="manualList" style="list-style:none;padding:0;margin:8px 0 0 0;display:grid;gap:8px;"></ul>
       <div style="display:flex;gap:8px;align-items:center;margin-top:8px;">
-        <button class="icon-btn" id="toggleShowIgnored">显示已忽略提醒</button>
+        <button class="icon-btn" id="toggleShowIgnored">Show Ignored</button>
         <div style="flex:1"></div>
         <div class="small-text" id="manualPageInfo"></div>
       </div>
     </div>
 
     <div id="manualEditPanel" style="display:none;position:fixed;right:20px;bottom:20px;width:320px;padding:16px;background:#fff;border:1px solid rgba(148,163,184,0.12);border-radius:12px;box-shadow:0 20px 60px rgba(0,0,0,0.12);z-index:30;">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;"><strong>编辑提醒</strong><button id="manualEditClose" class="icon-btn">关闭</button></div>
-      <label>提醒内容<input id="manualEditText" type="text" style="width:100%;padding:8px;margin-top:6px;border-radius:8px;border:1px solid rgba(148,163,184,0.2);" /></label>
-      <label style="margin-top:8px;">触发时间<input id="manualEditScheduled" type="datetime-local" style="width:100%;padding:8px;margin-top:6px;border-radius:8px;border:1px solid rgba(148,163,184,0.2);" /></label>
-      <label style="margin-top:8px;">重复规则<select id="manualEditRepeat" style="width:100%;padding:8px;margin-top:6px;border-radius:8px;border:1px solid rgba(148,163,184,0.2);"><option value="none">无</option><option value="daily">每天</option></select></label>
-      <div style="display:flex;gap:8px;margin-top:12px;"><button class="primary" id="manualEditSave">保存</button><button class="icon-btn" id="manualEditCancel">取消</button></div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;"><strong>Edit Reminder</strong><button id="manualEditClose" class="icon-btn">Close</button></div>
+      <label>Reminder Text<input id="manualEditText" type="text" style="width:100%;padding:8px;margin-top:6px;border-radius:8px;border:1px solid rgba(148,163,184,0.2);" /></label>
+      <label style="margin-top:8px;">Trigger Time<input id="manualEditScheduled" type="datetime-local" style="width:100%;padding:8px;margin-top:6px;border-radius:8px;border:1px solid rgba(148,163,184,0.2);" /></label>
+      <label style="margin-top:8px;">Repeat Rule<select id="manualEditRepeat" style="width:100%;padding:8px;margin-top:6px;border-radius:8px;border:1px solid rgba(148,163,184,0.2);"><option value="none">None</option><option value="daily">Daily</option></select></label>
+      <div style="display:flex;gap:8px;margin-top:12px;"><button class="primary" id="manualEditSave">Save</button><button class="icon-btn" id="manualEditCancel">Cancel</button></div>
     </div>
   </section>
   <section class="mini-view" id="miniView">
     <div class="mini-box">
       <div class="row">
-        <strong>固定提醒</strong>
+        <strong>Fixed Reminders</strong>
       </div>
       <div class="row">
-        <span>下次</span>
+        <span>Next</span>
         <strong id="miniNextReminder">--:--</strong>
       </div>
       <div class="row">
-        <span id="miniScheduleStatus">等待提醒</span>
-        <span id="miniScheduleCount">提醒 0 次</span>
+        <span id="miniScheduleStatus">Waiting</span>
+        <span id="miniScheduleCount">Reminders: 0</span>
       </div>
     </div>
     <div class="mini-box">
       <div class="row">
-        <strong>喝水提醒</strong>
+        <strong>Water Reminders</strong>
       </div>
       <div class="row">
-        <span>剩余</span>
+        <span>Remaining</span>
         <strong id="miniCountdown">00:00</strong>
       </div>
       <div class="row">
-        <span id="miniStatus">专注中</span>
-        <span id="miniWaterCount">喝水 0 次</span>
+        <span id="miniStatus">Active</span>
+        <span id="miniWaterCount">Water: 0</span>
       </div>
     </div>
   </section>
   <aside class="toast" id="toast">
-    <strong id="toastTitle">休息一下吧</strong>
-    <small id="toastBody">短暂松弛后能更稳定地回到工作状态。</small>
-    <button id="closeToast">已看</button>
+    <strong id="toastTitle">Take a Break</strong>
+    <small id="toastBody">A brief pause helps you return to work with better focus.</small>
+    <button id="closeToast">Got it</button>
   </aside>
   <script>
     const scheduleCountdownEl = document.getElementById('currentTime');
@@ -491,7 +491,7 @@
         if (typeof config.showIgnored === 'boolean') showIgnored = config.showIgnored;
         workInput.value = oldIntervalMinutes;
       } catch (error) {
-        console.warn('读取设置失败', error);
+        console.warn('Failed to load settings', error);
       }
     }
 
@@ -514,7 +514,7 @@
     function requestNotificationPermission() {
       if (!('Notification' in window) || typeof Notification.requestPermission !== 'function') {
         updateNotificationStatus();
-        showToast('通知不支持', '当前浏览器或页面环境无法使用桌面通知。');
+        showToast('Notifications Not Supported', 'This browser or page environment does not support desktop notifications.');
         return;
       }
       const handlePermission = (permission) => {
@@ -522,36 +522,36 @@
         updateNotificationStatus();
         if (permission === 'granted') {
           try {
-            new Notification('喝水提醒已启用', { body: '设置成功，后续会在后台提示你喝水', silent: true });
+            new Notification('Water Reminders Enabled', { body: 'Settings saved. You will receive reminders.', silent: true });
           } catch (error) {
-            console.warn('通知测试失败', error);
-            showToast('通知已启用', '提醒已开启，但系统通知创建失败。');
+            console.warn('Notification test failed', error);
+            showToast('Notifications Enabled', 'Reminders are active, but system notification creation failed.');
           }
         } else if (permission === 'denied') {
-          showToast('通知已拒绝', '请在浏览器设置中允许通知，或使用页面内提醒。');
+          showToast('Notifications Denied', 'Please allow notifications in browser settings or use in-page reminders.');
         }
       };
       const result = Notification.requestPermission(handlePermission);
       if (result && typeof result.then === 'function') {
         result.then(handlePermission).catch((error) => {
-          console.warn('通知权限请求失败', error);
+          console.warn('Notification permission request failed', error);
           updateNotificationStatus();
-          showToast('请求失败', '通知权限请求出错，请刷新页面再试。');
+          showToast('Request Failed', 'Notification permission request failed. Please refresh the page.');
         });
       }
     }
 
     function getNotificationStatusText() {
-      if (!('Notification' in window)) return '不支持通知';
+      if (!('Notification' in window)) return 'Notifications not supported';
       const perm = Notification.permission || notificationState || 'default';
-      if (perm === 'granted') return '通知已开启';
-      if (perm === 'denied') return '通知已拒绝';
-      return '通知未开启';
+      if (perm === 'granted') return 'Notifications enabled';
+      if (perm === 'denied') return 'Notifications denied';
+      return 'Notifications not enabled';
     }
 
     function updateNotificationStatus() {
       if (!notificationStatusEl) return;
-      notificationStatusEl.textContent = `通知状态：${getNotificationStatusText()}`;
+      notificationStatusEl.textContent = `Notification status: ${getNotificationStatusText()}`;
     }
 
 
@@ -594,7 +594,7 @@
 
     function markActivity() {
       lastActivity = Date.now();
-      if (activityStatusEl) activityStatusEl.textContent = '活动状态：活跃';
+      if (activityStatusEl) activityStatusEl.textContent = 'Activity: Active';
     }
 
     function updateUI() {
@@ -602,28 +602,28 @@
       scheduleCountdownEl.textContent = now.toLocaleTimeString();
       const nextSlot = getNextScheduleSlot(now);
       scheduleNextEl.textContent = nextSlot !== null ? formatSlot(nextSlot) : '--:--';
-      const activeText = isUserActive() ? '活动状态：活跃' : '活动状态：空闲，暂不提醒';
+      const activeText = isUserActive() ? 'Activity: Active' : 'Activity: Idle, no reminders';
       if (activityStatusEl) activityStatusEl.textContent = activeText;
-      scheduleStatusEl.textContent = isUserActive() ? '当前状态：等待提醒' : '当前状态：空闲中';
-      scheduleCountEl.textContent = `累计提醒 ${reminderCount} 次`;
+      scheduleStatusEl.textContent = isUserActive() ? 'Status: Waiting' : 'Status: Idle';
+      scheduleCountEl.textContent = `Total reminders: ${reminderCount}`;
       oldCountdownEl.textContent = formatTime(oldRemaining);
-      oldStatusEl.textContent = oldActive ? '当前状态：运行中' : '当前状态：暂停';
-      oldCountEl.textContent = `累计提醒 ${oldReminderCount} 次`;
-      oldModeEl.textContent = '喝水提醒';
+      oldStatusEl.textContent = oldActive ? 'Status: Running' : 'Status: Paused';
+      oldCountEl.textContent = `Total reminders: ${oldReminderCount}`;
+      oldModeEl.textContent = 'Water Reminder';
       miniCountdownEl.textContent = formatTime(oldRemaining);
-      miniStatusEl.textContent = oldActive ? '专注中' : '暂停中';
-      miniWaterCountEl.textContent = `喝水 ${reminderCount} 次`;
+      miniStatusEl.textContent = oldActive ? 'Active' : 'Paused';
+      miniWaterCountEl.textContent = `Water: ${reminderCount}`;
       miniNextReminderEl.textContent = nextSlot !== null ? formatSlot(nextSlot) : '--:--';
-      miniScheduleStatusEl.textContent = isUserActive() ? '等待提醒' : '空闲';
-      miniScheduleCountEl.textContent = `提醒 ${reminderCount} 次`;
+      miniScheduleStatusEl.textContent = isUserActive() ? 'Waiting' : 'Idle';
+      miniScheduleCountEl.textContent = `Reminders: ${reminderCount}`;
       manualCountEl.textContent = manualReminders.length.toString();
       manualSummaryEl.textContent = manualReminders.length
-        ? `最新：${manualReminders[manualReminders.length - 1].text}`
-        : '各类提醒都可手动添加。';
+        ? `Latest: ${manualReminders[manualReminders.length - 1].text}`
+        : 'Add reminders as needed.';
       renderManualList();
-      if (toggleShowIgnoredBtn) toggleShowIgnoredBtn.textContent = showIgnored ? '隐藏已忽略提醒' : '显示已忽略提醒';
-      toggleHideBtn.textContent = hiddenMode ? '退出隐藏' : '隐藏模式';
-      toggleQuietBtn.textContent = quietMode ? '取消静音' : '静音';
+      if (toggleShowIgnoredBtn) toggleShowIgnoredBtn.textContent = showIgnored ? 'Hide Ignored' : 'Show Ignored';
+      toggleHideBtn.textContent = hiddenMode ? 'Exit Hide Mode' : 'Hide Mode';
+      toggleQuietBtn.textContent = quietMode ? 'Unmute' : 'Mute';
       updateNotificationStatus();
       saveSettings();
     }
@@ -639,7 +639,7 @@
       try {
         new Notification(message, { body: description, silent: true });
       } catch (error) {
-        console.warn('系统通知创建失败', error);
+        console.warn('System notification creation failed', error);
       }
     }
 
@@ -655,7 +655,7 @@
           updateNotificationStatus();
         });
       } catch (error) {
-        console.warn('权限查询失败', error);
+        console.warn('Permission query failed', error);
       }
     }
 
@@ -667,7 +667,7 @@
     function addManualReminder() {
       const type = manualTypeEl ? manualTypeEl.value : 'time';
       const now = new Date();
-      const text = (manualTextEl && manualTextEl.value ? manualTextEl.value.trim() : '') || (type === 'time' ? '指定时间提醒' : '延迟提醒');
+      const text = (manualTextEl && manualTextEl.value ? manualTextEl.value.trim() : '') || (type === 'time' ? 'Specific time reminder' : 'Delayed reminder');
       let scheduledAt = now;
       if (type === 'time' && manualTimeEl && manualTimeEl.value) {
         const parts = manualTimeEl.value.split(':').map(Number);
@@ -709,7 +709,7 @@
       if (timeLabel) timeLabel.style.display = type === 'time' ? '' : 'none';
       if (delayLabel) delayLabel.style.display = type === 'delay' ? '' : 'none';
       if (manualTextEl) {
-        manualTextEl.placeholder = type === 'time' ? '例如：在 18:30 提醒' : type === 'delay' ? '例如：10 分钟后提醒' : '例如：喝水、站起来活动';
+        manualTextEl.placeholder = type === 'time' ? 'e.g. Reminder at 18:30' : type === 'delay' ? 'e.g. 10 minutes from now' : 'e.g. Drink water, Stand up';
       }
     }
 
@@ -722,7 +722,7 @@
         if (!r.scheduledAt) continue;
         const sched = Date.parse(r.scheduledAt);
         if (isNaN(sched)) continue;
-        // 只在 triggered 为 false 且时间已到时触发提醒，触发后立即标记为 triggered
+        // Only trigger once when triggered is false and time has arrived
         if (!r.triggered && sched <= nowTs) {
           // handle repeat rules
           if (r.repeat === 'daily') {
@@ -733,7 +733,7 @@
           }
           r.triggered = true;
           changed = true;
-          showToast(r.text || '手动提醒', `手动提醒触发：${r.text || ''}`);
+          showToast(r.text || 'Custom Reminder', `Reminder triggered: ${r.text || ''}`);
         }
       }
       if (changed) {
@@ -754,18 +754,18 @@
       manualListEl.innerHTML = pageItems.map((r) => {
         const sched = r.scheduledAt ? new Date(r.scheduledAt) : null;
         const timeText = sched ? sched.toLocaleString() : '--';
-        const status = r.triggered ? '已触发' : (r.repeat === 'daily' ? '重复' : '等待');
-        const short = `${r.text || '[无内容]'} · ${timeText} · ${status}`;
+        const status = r.triggered ? 'Triggered' : (r.repeat === 'daily' ? 'Repeat' : 'Waiting');
+        const short = `${r.text || '[No content]'} · ${timeText} · ${status}`;
         return `
           <li style="display:flex;justify-content:space-between;align-items:center;padding:8px;background:rgba(250,250,250,0.9);border-radius:10px;border:1px solid rgba(200,200,200,0.12);">
             <div style="flex:1;margin-right:12px;font-size:0.95rem;color:#263238;">${short}</div>
             <div style="display:flex;gap:8px;">
-              ${r.disabled ? `<button class="icon-btn restore-btn" data-id="${r.id}">恢复</button><button class="icon-btn purge-btn" data-id="${r.id}">永久删除</button>` : `<button class="icon-btn edit-btn" data-id="${r.id}">编辑</button><button class="icon-btn disable-btn" data-id="${r.id}">忽略</button><button class="icon-btn delete-btn" data-id="${r.id}">删除</button>`}
+              ${r.disabled ? `<button class="icon-btn restore-btn" data-id="${r.id}">Restore</button><button class="icon-btn purge-btn" data-id="${r.id}">Delete</button>` : `<button class="icon-btn edit-btn" data-id="${r.id}">Edit</button><button class="icon-btn disable-btn" data-id="${r.id}">Ignore</button><button class="icon-btn delete-btn" data-id="${r.id}">Remove</button>`}
             </div>
           </li>`;
       }).join('');
       // show total count
-      if (manualPageInfoEl) manualPageInfoEl.textContent = `${(showIgnored ? ignored.length : active.length)} 条`;
+      if (manualPageInfoEl) manualPageInfoEl.textContent = `${(showIgnored ? ignored.length : active.length)} items`;
     }
 
     function deleteManualReminder(id) {
@@ -782,7 +782,7 @@
       r.disabled = true;
       saveSettings();
       updateUI();
-      showToast('已标记为不再提醒', r.text || '已忽略该提醒');
+      showToast('Marked as Ignored', r.text || 'Reminder ignored');
     }
 
     function restoreManualReminder(id) {
@@ -791,7 +791,7 @@
       r.disabled = false;
       saveSettings();
       updateUI();
-      showToast('已恢复提醒', r.text || '已恢复该提醒');
+      showToast('Reminder Restored', r.text || 'Reminder restored');
     }
 
     function purgeManualReminder(id) {
@@ -837,7 +837,7 @@
       saveSettings();
       updateUI();
       closeEditPanel();
-      showToast('已保存提醒', r.text || '手动提醒已更新');
+      showToast('Reminder Saved', r.text || 'Custom reminder updated');
     }
 
     function shouldTriggerSchedule(now) {
@@ -850,13 +850,13 @@
       if (!shouldTriggerSchedule(now)) return;
       if (!isUserActive()) return;
       
-      // 用当前时刻分钟级时间戳作为 key，确保整分钟内只触发一次
+      // Use minute-level timestamp as key to ensure only one trigger per minute window
       const currentMinuteTs = Math.floor(now.getTime() / 60000) * 60000;
       if (lastScheduleRemindTime === currentMinuteTs) return;
       
       lastScheduleRemindTime = currentMinuteTs;
       reminderCount += 1;
-      showToast('该喝水了', '现在是固定提醒时间，补充一杯水保持精力。');
+      showToast('Time to Hydrate', 'It\'s time for your scheduled reminder. Stay hydrated!');
     }
 
     function tickOldTimer() {
@@ -867,7 +867,7 @@
       }
       oldReminderCount += 1;
       oldRemaining = oldIntervalMinutes * 60;
-      showToast('喝水提醒', '时间到了，补充水或休息一下。');
+      showToast('Water Reminder', 'Time\'s up! Drink some water or take a break.');
     }
 
     function toggleHiddenMode() {
@@ -910,7 +910,7 @@
         else if (btn.classList.contains('purge-btn')) purgeManualReminder(id);
       });
     }
-    if (toggleShowIgnoredBtn) toggleShowIgnoredBtn.addEventListener('click', () => { showIgnored = !showIgnored; toggleShowIgnoredBtn.textContent = showIgnored ? '隐藏已忽略提醒' : '显示已忽略提醒'; saveSettings(); updateUI(); });
+    if (toggleShowIgnoredBtn) toggleShowIgnoredBtn.addEventListener('click', () => { showIgnored = !showIgnored; toggleShowIgnoredBtn.textContent = showIgnored ? 'Hide Ignored' : 'Show Ignored'; saveSettings(); updateUI(); });
     if (manualEditCancel) manualEditCancel.addEventListener('click', closeEditPanel);
     if (manualEditClose) manualEditClose.addEventListener('click', closeEditPanel);
     if (manualEditSave) manualEditSave.addEventListener('click', saveEditPanel);
